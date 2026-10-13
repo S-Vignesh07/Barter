@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Barter — Buy, Sell, Swap</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">B</span> Barter</a>
+  <nav>
+    <a href="#explore">Explore</a>
+    <a href="#sell">List an item</a>
+    <a href="#dashboard">My account</a>
+  </nav>
+  <button class="btn dark" id="loginOpen">Log in</button>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">A smarter kind of second-hand</p>
+      <h1>Your next favourite thing is already <em>out there.</em></h1>
+      <p class="intro">Sell what you no longer need. Buy what you love. Swap good things and keep them moving.</p>
+      <div class="hero-actions">
+        <a class="btn dark" href="#explore">Explore marketplace ↗</a>
+        <a class="text-link" href="#sell">Have something to trade? →</a>
+      </div>
+      <div class="pill-row"><span>Sell</span><span>Buy</span><span>Swap</span><span>Repeat</span></div>
+    </div>
+    <div class="hero-art"><div class="circle">↔<small>FIND NEW HOMES</small></div><p>Less waste. More wonder.</p></div>
+  </section>
+
+  <section class="section" id="explore">
+    <div class="section-heading">
+      <div><p class="eyebrow">The community shelf</p><h2>Find something <em>unexpected.</em></h2></div>
+      <button class="btn outline" id="refreshBtn">Refresh listings ↻</button>
+    </div>
+    <div class="filters">
+      <input id="search" placeholder="Search books, gadgets, cycles…">
+      <select id="category"><option value="">All categories</option><option>Books</option><option>Electronics</option><option>Fashion</option><option>Home</option><option>Sports</option><option>Other</option></select>
+      <input id="city" placeholder="City">
+      <select id="type"><option value="">Sell or swap</option><option value="sell">For sale</option><option value="swap">Swap</option><option value="both">Sell or swap</option></select>
+      <button class="btn dark" id="searchBtn">Search</button>
+    </div>
+    <div id="listingGrid" class="listing-grid"><div class="empty-state">Loading listings…</div></div>
+  </section>
+
+  <section class="section split" id="sell">
+    <div><p class="eyebrow">Pass it forward</p><h2>That thing you don't use? <em>Someone's looking for it.</em></h2><p class="muted">Create a listing in a few simple steps. Log in first to publish.</p></div>
+    <form id="listingForm" class="panel">
+      <h3>List an item</h3>
+      <label>Item name<input name="title" required maxlength="180" placeholder="e.g. Bluetooth speaker"></label>
+      <div class="two">
+        <label>Category<select name="category" required><option value="Books">Books</option><option value="Electronics">Electronics</option><option value="Fashion">Fashion</option><option value="Home">Home</option><option value="Sports">Sports</option><option value="Other">Other</option></select></label>
+        <label>Condition<select name="condition"><option>Like new</option><option>Good</option><option>Fair</option><option>Needs repair</option></select></label>
+      </div>
+      <div class="two">
+        <label>City<input name="city" required placeholder="Hyderabad"></label>
+        <label>Listing type<select name="listing_type"><option value="sell">For sale</option><option value="swap">Swap only</option><option value="both">Sell or swap</option></select></label>
+      </div>
+      <div class="two">
+        <label>Price (₹)<input name="price" type="number" min="0" step="0.01" placeholder="0"></label>
+        <label>Quantity<input name="quantity" type="number" min="1" step="1" value="1" required></label>
+      </div>
+      <label>Image URL (optional)<input name="image_url" type="url" placeholder="https://..."></label>
+      <label>Description<textarea name="description" rows="4" placeholder="Describe the item and its condition"></textarea></label>
+      <label class="check"><input type="checkbox" name="open_to_offers"> Open to offers</label>
+      <button class="btn dark full" type="submit">Publish listing ↗</button>
+      <p id="listingMessage" class="form-message"></p>
+    </form>
+  </section>
+
+  <section class="section" id="dashboard">
+    <p class="eyebrow">Your Barter space</p><h2>My account</h2>
+    <div class="dashboard-grid">
+      <div class="panel" id="accountCard">
+        <h3>Your account</h3><p class="muted">Log in to manage listings, orders and your wishlist.</p>
+      </div>
+      <div class="panel">
+        <h3>My listings</h3><p class="muted">Manage products you have listed.</p>
+        <button class="btn outline" id="myListingsBtn">Load my listings</button>
+        <div id="myListings"></div>
+      </div>
+      <div class="panel">
+        <h3>My purchases</h3><button class="btn outline" id="myPurchasesBtn">View purchases</button><div id="myPurchases"></div>
+      </div>
+      <div class="panel">
+        <h3>My sales</h3><button class="btn outline" id="mySalesBtn">View sales</button><div id="mySales"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="authModal" class="modal hidden">
+  <div class="modal-card">
+    <button id="modalClose" class="modal-close" aria-label="Close">×</button>
+    <p class="eyebrow">Welcome to Barter</p><h2 id="authTitle">Join the community.</h2>
+    <div class="auth-tabs"><button data-mode="register" class="active" type="button">Register</button><button data-mode="login" type="button">Log in</button></div>
+    <form id="authForm">
+      <div id="nameField"><label>Name<input name="name" required autocomplete="name"></label></div>
+      <label>Email<input name="email" type="email" required autocomplete="email"></label>
+      <label>Password<input name="password" type="password" required minlength="8" autocomplete="current-password"></label>
+      <label>City (optional)<input name="city" autocomplete="address-level2"></label>
+      <button class="btn dark full" id="authSubmit" type="submit">Create account</button>
+      <p id="authMessage" class="form-message"></p>
+    </form>
+  </div>
+</div>
+<script src="/app.js" defer></script>
+</body>
+</html>
